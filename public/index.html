@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Küçük çocuklar için fotoğraflı ve sesli İngilizce kelime öğrenme uygulaması" />
+    <title>Kelime Bahçesi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="world" aria-hidden="true">
+      <div class="sky-layer"></div>
+      <div class="hill hill-back"></div>
+      <div class="hill hill-mid"></div>
+      <div class="hill hill-front"></div>
+    </div>
+
+    <div class="coin-chip" id="coin-chip" hidden>
+      <span class="coin-dot" aria-hidden="true"></span>
+      <span id="coin-amount">0</span>
+    </div>
+
+    <main class="app" id="app">
+      <!-- Welcome -->
+      <section class="screen screen-welcome is-active" id="screen-welcome" aria-label="Karşılama">
+        <div class="welcome-hero">
+          <p class="brand">Kelime Bahçesi</p>
+          <h1 class="headline">Dinle, bak, söyle — Tomo’yu büyüt</h1>
+          <p class="lead">Doğru kelimelerde bahçe parası kazan. Parayla Tomo’ya yiyecek ve eşya al.</p>
+          <p class="load-status" id="load-status" role="status">Cambridge çocuk kelimeleri yükleniyor…</p>
+          <button type="button" class="btn btn-primary" id="btn-start" disabled>Haritaya git</button>
+          <p class="hint" id="mic-hint">Mikrofon için Chrome veya Edge kullanmanı öneririz.</p>
+        </div>
+      </section>
+
+      <!-- Map -->
+      <section class="screen screen-map" id="screen-map" aria-label="Seviye haritası" hidden>
+        <header class="map-header">
+          <div>
+            <p class="brand brand-sm">Kelime Bahçesi</p>
+            <h2 class="map-title">Keşif haritası</h2>
+          </div>
+          <div class="map-stats" aria-live="polite">
+            <div class="stat">
+              <span class="stat-value" id="stat-levels">0/0</span>
+              <span class="stat-label">seviye</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="stat-words">0</span>
+              <span class="stat-label">kelime</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="journey-bar" aria-hidden="true">
+          <div class="journey-fill" id="journey-fill"></div>
+        </div>
+        <p class="map-caption" id="map-caption">Sıradaki durak seni bekliyor</p>
+
+        <div class="map-scroll" id="map-scroll">
+          <div class="map-trail" id="map-trail">
+            <svg class="map-path" id="map-path" aria-hidden="true"></svg>
+            <div class="map-nodes" id="map-nodes"></div>
+          </div>
+        </div>
+
+        <nav class="dock" aria-label="Ana menü">
+          <button type="button" class="dock-btn is-active" id="dock-map" aria-current="page">
+            <span class="dock-icon dock-icon-map" aria-hidden="true"></span>
+            Harita
+          </button>
+          <button type="button" class="dock-btn" id="dock-pet">
+            <span class="dock-icon dock-icon-pet" aria-hidden="true"></span>
+            Tomo
+          </button>
+        </nav>
+      </section>
+
+      <!-- Pet -->
+      <section class="screen screen-pet" id="screen-pet" aria-label="Tomo" hidden>
+        <header class="pet-header">
+          <button type="button" class="btn-icon-round" id="btn-pet-map" aria-label="Haritaya dön">
+            <span aria-hidden="true">←</span>
+          </button>
+          <div>
+            <p class="brand brand-sm">Kelime Bahçesi</p>
+            <h2 class="map-title" id="pet-name">Tomo</h2>
+          </div>
+          <button type="button" class="btn btn-soft btn-compact" id="btn-pet-shop">Market</button>
+        </header>
+
+        <div class="pet-stage">
+          <div class="pet-room" id="pet-room">
+            <div class="pet-shadow" aria-hidden="true"></div>
+            <div class="pet" id="pet" data-mood="ok">
+              <div class="pet-hat" id="pet-hat" hidden></div>
+              <div class="pet-body" id="pet-body">
+                <div class="pet-eye pet-eye-l"><span></span></div>
+                <div class="pet-eye pet-eye-r"><span></span></div>
+                <div class="pet-cheek pet-cheek-l"></div>
+                <div class="pet-cheek pet-cheek-r"></div>
+                <div class="pet-mouth" id="pet-mouth"></div>
+              </div>
+            </div>
+            <p class="pet-speech" id="pet-speech" aria-live="polite">Merhaba!</p>
+          </div>
+
+          <div class="pet-meters">
+            <div class="meter">
+              <span class="meter-label">Açlık</span>
+              <div class="meter-track"><div class="meter-fill meter-hunger" id="meter-hunger"></div></div>
+            </div>
+            <div class="meter">
+              <span class="meter-label">Mutluluk</span>
+              <div class="meter-track"><div class="meter-fill meter-happy" id="meter-happy"></div></div>
+            </div>
+            <div class="meter">
+              <span class="meter-label">Enerji</span>
+              <div class="meter-track"><div class="meter-fill meter-energy" id="meter-energy"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pet-tabs" role="tablist">
+          <button type="button" class="pet-tab is-active" data-tab="bag" role="tab" aria-selected="true">Çanta</button>
+          <button type="button" class="pet-tab" data-tab="shop" role="tab" aria-selected="false">Market</button>
+        </div>
+
+        <div class="pet-panel is-active" id="panel-bag" role="tabpanel">
+          <p class="panel-hint" id="bag-hint">Yiyecek veya oyuncak seç, Tomo’ya ver.</p>
+          <div class="shop-grid" id="bag-grid"></div>
+        </div>
+
+        <div class="pet-panel" id="panel-shop" role="tabpanel" hidden>
+          <div class="shop-filters" id="shop-filters">
+            <button type="button" class="filter-btn is-active" data-kind="all">Hepsi</button>
+            <button type="button" class="filter-btn" data-kind="food">Yiyecek</button>
+            <button type="button" class="filter-btn" data-kind="toy">Oyuncak</button>
+            <button type="button" class="filter-btn" data-kind="skin">Renk</button>
+            <button type="button" class="filter-btn" data-kind="hat">Şapka</button>
+          </div>
+          <div class="shop-grid" id="shop-grid"></div>
+        </div>
+
+        <nav class="dock" aria-label="Ana menü">
+          <button type="button" class="dock-btn" id="dock-map-2">
+            <span class="dock-icon dock-icon-map" aria-hidden="true"></span>
+            Harita
+          </button>
+          <button type="button" class="dock-btn is-active" id="dock-pet-2" aria-current="page">
+            <span class="dock-icon dock-icon-pet" aria-hidden="true"></span>
+            Tomo
+          </button>
+        </nav>
+      </section>
+
+      <!-- Play -->
+      <section class="screen screen-play" id="screen-play" aria-label="Kelime çalışması" hidden>
+        <header class="topbar">
+          <button type="button" class="btn-icon-round" id="btn-to-map" aria-label="Haritaya dön">
+            <span aria-hidden="true">←</span>
+          </button>
+          <div class="progress" aria-live="polite">
+            <span id="level-label">Seviye 1</span>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span id="word-count">1 / 3</span>
+          </div>
+        </header>
+
+        <figure class="word-stage">
+          <div class="photo-frame" id="photo-frame">
+            <img id="word-image" alt="" src="" />
+            <div class="photo-shine" aria-hidden="true"></div>
+          </div>
+          <figcaption>
+            <p class="word-tr" id="word-tr"></p>
+            <p class="word-en" id="word-en"></p>
+          </figcaption>
+        </figure>
+
+        <p class="status" id="status" role="status" aria-live="polite">Dinle…</p>
+        <p class="coin-toast" id="coin-toast" hidden aria-live="polite"></p>
+
+        <div class="actions">
+          <button type="button" class="btn btn-soft" id="btn-hear" aria-label="Kelimeyi tekrar dinle">
+            <span class="btn-icon" aria-hidden="true">▶</span>
+            Dinle
+          </button>
+          <button type="button" class="btn btn-mic" id="btn-speak" aria-label="Tekrar etmek için konuş">
+            <span class="mic-ring" aria-hidden="true"></span>
+            <span class="mic-core" aria-hidden="true"></span>
+            <span class="mic-label">Tekrar et</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Level complete -->
+      <section class="screen screen-level" id="screen-level" aria-label="Seviye tamamlandı" hidden>
+        <p class="brand brand-sm">Kelime Bahçesi</p>
+        <div class="celebrate" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <h2 class="headline" id="level-done-title">Seviye tamam!</h2>
+        <p class="lead" id="level-done-text">Harika iş. Haritada yeni bir yol açıldı.</p>
+        <div class="done-actions">
+          <button type="button" class="btn btn-soft" id="btn-level-pet">Tomo’ya bak</button>
+          <button type="button" class="btn btn-soft" id="btn-level-map">Harita</button>
+          <button type="button" class="btn btn-primary" id="btn-next-level">Sonraki seviye</button>
+        </div>
+      </section>
+
+      <!-- All done -->
+      <section class="screen screen-done" id="screen-done" aria-label="Tüm seviyeler bitti" hidden>
+        <p class="brand">Kelime Bahçesi</p>
+        <h2 class="headline">Bahçenin sonuna ulaştın!</h2>
+        <p class="lead">Tüm durakları tamamladın. Kazandığın parayla Tomo’yu şımartabilirsin.</p>
+        <div class="done-actions">
+          <button type="button" class="btn btn-soft" id="btn-done-pet">Tomo</button>
+          <button type="button" class="btn btn-soft" id="btn-done-map">Harita</button>
+          <button type="button" class="btn btn-primary" id="btn-restart">Baştan başla</button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>

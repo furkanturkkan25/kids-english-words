@@ -1,0 +1,49 @@
+name: KelimeBahcesi
+options:
+  bundleIdPrefix: com.kelimebahcesi
+  deploymentTarget:
+    iOS: "16.0"
+  developmentLanguage: tr
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+targets:
+  KelimeBahcesi:
+    type: application
+    platform: iOS
+    sources:
+      - path: KelimeBahcesi
+        excludes:
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kelimebahcesi.app
+        INFOPLIST_FILE: KelimeBahcesi/Info.plist
+        GENERATE_INFOPLIST_FILE: false
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: "1.0"
+        SUPPORTS_MACCATALYST: false
+    info:
+      path: KelimeBahcesi/Info.plist
+      properties:
+        CFBundleDisplayName: Kelime Bahçesi
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSMicrophoneUsageDescription: Kelimeleri tekrar edebilmen için mikrofon gerekli.
+        NSSpeechRecognitionUsageDescription: Söylediğin İngilizce kelimeleri dinlemek için konuşma tanıma kullanılır.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+          NSAllowsArbitraryLoads: true
+schemes:
+  KelimeBahcesi:
+    build:
+      targets:
+        KelimeBahcesi: all
+    run:
+      config: Debug
