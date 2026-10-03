@@ -1,33 +1,46 @@
-# Kelime Bahçesi v2
+# Kelime Bahçesi
 
-![Kelime Bahçesi](ekran/ana.png)
+Dinle, bak, söyle. Doğru kelimede bahçe parası birikir. Parayla Tomo’ya yiyecek, oyuncak, renk ve şapka alınır.
 
+![Karşılama](ekran/ana.png)
 
-Mikroservis mimarisi: gateway + words / media / shop.
+![Keşif haritası](ekran/harita.png)
 
-## Çalıştırma
+![Kelime](ekran/kelime.png)
+
+![Tomo](ekran/tomo.png)
+
+![Market](ekran/market.png)
+
+## Kurulum
 
 ```bash
 cd kids-english-words
-npm start
+node server/gateway.mjs
 ```
 
-Aç: [http://localhost:5174](http://localhost:5174)
+Aç: http://127.0.0.1:5174
 
-## Servisler
+`PORT` portu değiştirir. `npm start` aynı kapıyı açar.
 
-| Endpoint | Servis | Görev |
-|----------|--------|--------|
-| `GET /api/levels` | words | Cambridge YLE seviyeleri (disk önbellek) |
-| `GET /api/media?word=cat` | media | Wikipedia görseli + TR |
-| `GET /api/shop` | shop | Market kataloğu + ödül sabitleri |
-| `GET /api/health` | gateway | Sağlık kontrolü |
+İlk açılışta kelime listesi disk önbelleğinden gelir. Önbellek yoksa servis listeyi ağdan kurmayı dener; olmazsa gömülü yedek seviyeler kullanılır.
 
-İstemci ince ES modülleri: `public/js/` (api, state, speech, screens).
+## Nasıl kuruldu
 
-## iOS (Swift)
+Tek **Node** süreci üç işi bir kapıdan verir:
 
-Aynı özellikler SwiftUI ile: [`KelimeBahcesi-iOS/`](KelimeBahcesi-iOS/README.md)
+| Yol | İş |
+| --- | --- |
+| `GET /api/levels` | Cambridge YLE seviyeleri. Disk önbelleği `cache/levels.json`. |
+| `GET /api/media?word=cat` | Kelime görseli ve Türkçe karşılık. Görsel Wikipedia’dan, çeviri gömülü sözlükten ya da ağdan. |
+| `GET /api/shop` | Market kataloğu ve ödül sabitleri. |
+| `GET /api/health` | Kapı ayakta mı. |
+
+İstemci `public/` altında çerçevesiz ES modülleri: `api.js`, `state.js`, `speech.js`, `screens/`. Konuşma tanıma tarayıcının Web Speech API’si ile çalışır; Chrome veya Edge daha sorunsuzdur. İlerleme bu tarayıcının kendi kaydında durur.
+
+## iOS
+
+Aynı akışın SwiftUI kopyası `KelimeBahcesi-iOS/` içindedir.
 
 ```bash
 open KelimeBahcesi-iOS/KelimeBahcesi.xcodeproj
